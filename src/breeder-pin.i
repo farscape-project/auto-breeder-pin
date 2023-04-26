@@ -59,6 +59,15 @@
   []
 []
 
+[Functions]
+  [pump_power_func]
+    type = ParsedFunction
+    expression = 'pi*r*r*vout*(pin+(0.5*vin*vin)-pout-(0.5*vout*vout))'
+    symbol_names =  'pin      vin pout vout      r'
+    symbol_values = 'ave_p_in 10  0    ave_v_out outlet_radius'
+  []
+[]
+
 [Postprocessors]
   [p_drop]
     type = ElementExtremeValue
@@ -78,6 +87,15 @@
   [breeder_area]
     type = VolumePostprocessor
     block = 'breeder'
+  []
+  [outlet_radius]
+    type = AreaPostprocessor
+    boundary = 'outlet'
+  []
+  [pumping_power]
+    type = FunctionValuePostprocessor
+    function = pump_power_func
+    indirect_dependencies = 'ave_v_out ave_p_in outlet_radius'
   []
 []
   
